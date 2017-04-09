@@ -22,6 +22,8 @@
 #include "esl_vectorops.h"
 
 #ifdef HMMER_THREADS
+#error "SHOULD NOT HAVE THREADS ENABLED!"
+
 #include <unistd.h>
 #include "esl_threads.h"
 #include "esl_workqueue.h"

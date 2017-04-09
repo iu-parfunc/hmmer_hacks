@@ -1023,6 +1023,7 @@ utest_interthread_comm(void)
   for (i = 0; i < njobs; i++)
     esl_stack_IPush(tt->input, i);
 
+  fprintf(stderr,"RRN: About to pthread create.. easel / utest_interthread_comm\n");
   pthread_create(&(tid[0]), NULL, pusher_thread, tt);
   pthread_create(&(tid[1]), NULL, pusher_thread, tt);
   pthread_create(&(tid[2]), NULL, popper_thread, tt);

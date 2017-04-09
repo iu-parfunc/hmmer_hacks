@@ -7,6 +7,7 @@
 #include "p7_config.h"
 
 #ifdef HMMER_THREADS
+#error "RRN: disabling threads hmmdmstr.c "
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1679,7 +1680,7 @@ client_comm_thread(void *arg)
     addrlen = sizeof(targs->ip_addr);
     strncpy(targs->ip_addr, inet_ntoa(addr.sin_addr), addrlen);
     targs->ip_addr[addrlen-1] = 0;
-
+    fprintf(stderr,"RRN: About to pthread create.. client_comm_thread()\n");
     if ((n = pthread_create(&thread_id, NULL, clientside_thread, targs)) != 0) LOG_FATAL_MSG("thread create", n);
   }
   
@@ -1726,6 +1727,7 @@ setup_clientside_comm(ESL_GETOPTS *opts, CLIENTSIDE_ARGS *args)
   if (listen(sock_fd, esl_opt_GetInteger(opts, "--ccncts")) < 0) LOG_FATAL_MSG("listen", errno);
   args->sock_fd = sock_fd;
 
+  fprintf(stderr,"RRN: About to pthread create.. setup_clientside_comm\n");
   if ((n = pthread_create(&thread_id, NULL, client_comm_thread, (void *)args)) != 0) LOG_FATAL_MSG("socket", n);
 }
 
@@ -2084,6 +2086,7 @@ worker_comm_thread(void *arg)
     strncpy(worker->ip_addr, inet_ntoa(addr.sin_addr), addrlen);
     worker->ip_addr[addrlen-1] = 0;
 
+    fprintf(stderr,"RRN: About to pthread create.. worker_comm_thread\n");
     if ((n = pthread_create(&thread_id, NULL, workerside_thread, worker)) != 0) LOG_FATAL_MSG("thread create", n);
   }
   
@@ -2130,7 +2133,7 @@ setup_workerside_comm(ESL_GETOPTS *opts, WORKERSIDE_ARGS *args)
   if (listen(sock_fd, esl_opt_GetInteger(opts, "--wcncts")) < 0) LOG_FATAL_MSG("listen", errno);
 
   args->sock_fd = sock_fd;
-
+  fprintf(stderr,"RRN: About to pthread create.. setup_workerside_comm()\n");
   if ((n = pthread_create(&thread_id, NULL, worker_comm_thread, (void *)args)) != 0) LOG_FATAL_MSG("thread create", n);
 }
 
